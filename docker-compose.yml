@@ -1,0 +1,20 @@
+services:
+  client:
+    image: node:12-alpine
+    working_dir: /app
+    ports:
+      - "${DOCKER_CLIENT_PORT}:3098"
+    depends_on:
+      - server
+    volumes:
+      - ./client:/app
+    command: ["./run.sh"]
+
+  server:
+    image: golang:1.24.1-alpine
+    working_dir: /app
+    ports:
+      - "${DOCKER_SERVER_PORT}:3099"
+    volumes:
+      - "./server:/app"
+    command: ["./run.sh"]
