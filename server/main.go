@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -94,11 +96,15 @@ func itemsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port, exist := os.LookupEnv("DOCKER_SERVER_PORT")
+	if !exist {
+		fmt.Println("DOCKER_SERVER_PORT is not set")
+	}
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/items", itemsHandler)
 	mux.HandleFunc("/items/", itemsHandler)
 
-	log.Println("Server is running on port 3099")
-	log.Fatal(http.ListenAndServe(":3099", enableCORS(mux)))
+	log.Printf("Server is running on port %s", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), enableCORS(mux)))
 }

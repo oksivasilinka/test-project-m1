@@ -9,7 +9,7 @@ module.exports = {
     ...common.resolve,
   },
   devServer: {
-    port: 3098,
+    port: process.env.DOCKER_CLIENT_PORT,
     hot: true,
     open: false,
     historyApiFallback: true
