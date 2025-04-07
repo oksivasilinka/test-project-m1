@@ -6,7 +6,7 @@ This project serves as a technical test assignment. It contains several bugs and
 - Fix bugs related to functionality and rendering.
 - Propose enhancements to the existing logic, code, and project (implementation optional, but a detailed description is required). 
 
-> 👉 Clone the repository to your local machine, create a new repository on your preferred platform, and push your solution there. Share a link to your completed solution. All your work, findings, and suggestions should be documented in a Markdown file named SOLUTION_REPORT.md..
+> 👉 Clone the repository to your local machine, create a new repository on your preferred platform, and push your solution there. Share a link to your completed solution. All your work, findings, and suggestions should be documented in a Markdown file named SOLUTION_REPORT.md
 
 ## Getting Started
 
