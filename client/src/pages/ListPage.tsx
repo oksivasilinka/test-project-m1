@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ListItem } from './components';
-import useData from './useData';
-import useSort from './useSort';
+import { ListItem } from '../components';
+import useData from '../hooks/useData';
+import useSort from '../hooks/useSort';
 
 const SubTitle: React.FC<any> = ({children}) => (
     <h2 className={'list-subtitle'}>Active Item ID: {children}</h2>
