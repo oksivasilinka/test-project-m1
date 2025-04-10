@@ -14,8 +14,8 @@ function ListPage() {
     const [activeItemId,  setActiveItemId] = useState<any>(null);
     const [filteredItems, setFilteredItems] = useState<any[]>([]);
     const [query, setQuery] = useState<string>('');
-    
-    const activeItemText = useMemo(() => activeItemId ? activeItemId : 'Empty', []);
+
+    const activeItemText = useMemo(() => activeItemId ? activeItemId : 'Empty', [activeItemId]);
     
   const handleItemClick = (id: any) => {
     setActiveItemId(id);
