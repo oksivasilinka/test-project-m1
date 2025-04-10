@@ -9,7 +9,7 @@ function useSort(items: any[]): [any[], any, any] {
 		}
 		
 		if (sortBy === 'ASC') {
-			return items.sort((a, b) => b.id - a.id)
+			return [...items].sort((a, b) => b.id - a.id)
 		}
 		
 		return items;
