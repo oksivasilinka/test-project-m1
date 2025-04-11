@@ -1,14 +1,23 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import {ItemsData} from "../types";
+import {SORT_TYPES, SortTypes} from "../constants";
 
-function useSort(items: any[]): [any[], any, any] {
-	const [sortBy, setSortBy] = useState('ASC');
-	
+type UseSortArg = {
+	items: ItemsData,
+	sortBy: SortTypes,
+	setSortBy?: (sortBy: SortTypes)=> void
+}
+
+type UseSortReturn = {
+	sortedItems: UseSortArg['items'],
+	sortBy: UseSortArg['sortBy'],
+	handleSortClick: () => void
+}
+
+function useSort({items, sortBy, setSortBy}: UseSortArg): UseSortReturn  {
+
 	const sortedItems = useMemo(() => {
-		if (sortBy === 'DESC') {
-			return items;
-		}
-		
-		if (sortBy === 'ASC') {
+		if (sortBy === SORT_TYPES.asc) {
 			return [...items].sort((a, b) => b.id - a.id)
 		}
 		
@@ -16,16 +25,15 @@ function useSort(items: any[]): [any[], any, any] {
 	}, [items, sortBy]);
 	
 	const handleSortClick = () => {
-		if (sortBy === 'ASC') {
-			setSortBy('DESC');
-		} else if (sortBy === 'DESC') {
-			setSortBy('ASC');
-		} else {
-			setSortBy('');
+		if (sortBy === SORT_TYPES.asc) {
+			setSortBy?.(SORT_TYPES.desc);
+		}
+		if (sortBy === SORT_TYPES.desc) {
+			setSortBy?.(SORT_TYPES.asc);
 		}
 	}
-	
-	return [sortedItems, sortBy, handleSortClick]
+
+	return {sortedItems, sortBy, handleSortClick}
 }
 
 export default useSort;
