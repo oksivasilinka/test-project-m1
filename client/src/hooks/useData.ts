@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import {ItemsData} from "../types";
 
 function useData() {
-	const [items, setItems] = useState<any[]>([]);
+	const [items, setItems] = useState<ItemsData>([]);
 	
 	function fetchItems() {
 		fetch(`${process.env.API_URL}/items`)

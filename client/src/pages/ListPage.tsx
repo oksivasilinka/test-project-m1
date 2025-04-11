@@ -1,63 +1,39 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ListItem } from './components';
-import useData from './useData';
-import useSort from './useSort';
-
-const SubTitle: React.FC<any> = ({children}) => (
-    <h2 className={'list-subtitle'}>Active Item ID: {children}</h2>
-)
+import { SubTitle} from '../components';
+import useData from '../hooks/useData';
+import useSort from '../hooks/useSort';
+import {FilterAndSort, ListItems} from "../views";
+import {useSortAndFilter} from "../providers";
+import useFilter from "../hooks/useFilter";
 
 function ListPage() {
     const items = useData();
-    const [sortedItems, sortBy, handleSortClick] = useSort(items);
+    const {setQuery, query, setSortBy, sortBy: sortByDefault} = useSortAndFilter()
+
+    const {sortedItems, sortBy, handleSortClick} = useSort({items, sortBy: sortByDefault, setSortBy});
+    const {filteredItems} = useFilter({items: sortedItems, query})
+
+    const [activeItemId,  setActiveItemId] = useState<number| null>(null);
+
+    const activeItemText = useMemo(() => activeItemId ?? 'Empty', [activeItemId]);
     
-    const [activeItemId,  setActiveItemId] = useState<any>(null);
-    const [filteredItems, setFilteredItems] = useState<any[]>([]);
-    const [query, setQuery] = useState<string>('');
-    
-    const activeItemText = useMemo(() => activeItemId ? activeItemId : 'Empty', []);
-    
-  const handleItemClick = (id: any) => {
-    setActiveItemId(id);
-  };
-  
-  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setQuery(event.target.value);
-  }
-    
+    const handleItemClick = (id: number) => {
+        setActiveItemId(id);
+    };
+
     useEffect(() => {
-        setFilteredItems(sortedItems);
-    }, [sortedItems]);
-  
-    useEffect(() => {
-        if (query.length > 0) {
-            setFilteredItems(filteredItems.filter(item => `${item.id}`.includes(query.toLowerCase().trimStart().trimEnd().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))));
-        }
-    }, [query, filteredItems]);
+        setQuery?.(query);
+    }, [query]);
+
 
   return (
     <div className={'list-wrapper'}>
         <div className="list-header">
             <h1 className={'list-title'}>Items List</h1>
             <SubTitle>{activeItemText}</SubTitle>
-            <button onClick={handleSortClick}>Sort ({sortBy === 'ASC' ? 'ASC' : 'DESC'})</button>
-            <input type="text" placeholder={'Filter by ID'} value={query} onChange={handleQueryChange} />
+            <FilterAndSort setQuery={setQuery} query={query} sortBy={sortBy} handleSortClick={handleSortClick}/>
         </div>
-        <div className="list-container">
-            <div className="list">
-                {filteredItems.length === 0 && <span>Loading...</span>}
-                {filteredItems.map((item, index) => (
-                    <ListItem
-                        key={index}
-                        isactive={activeItemId===item.id}
-                        id={item.id}
-                        name={item.name}
-                        description={item.description}
-                        onClick={handleItemClick}
-                    />
-                ))}
-            </div>
-        </div>
+        <ListItems items={filteredItems} handleItemClick={handleItemClick} activeItemId={activeItemId}/>
     </div>
   );
 }
